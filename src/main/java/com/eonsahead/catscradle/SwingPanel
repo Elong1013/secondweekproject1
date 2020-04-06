@@ -93,16 +93,21 @@ public class SwingPanel extends JPanel implements ActionListener {
         double uly2 = this.centerY - this.radius+0.2;
         double ulx3 = this.centerX - this.radius;
         double uly3 = this.centerY - this.radius+0.8;
+        double ulx4 = this.centerX - this.radius+0.2;
+        double uly4 = this.centerY - this.radius+0.8;
         Rectangle2D.Double Rect1 = new Rectangle2D.Double(ulx1, uly1, d, d);
-        Rectangle2D.Double Rect2 = new Rectangle2D.Double(ulx2, uly2, d, d);
-        Ellipse2D.Double circle1 = new Ellipse2D.Double(ulx3, uly3, d, d);
+        Rectangle2D.Double Rect2 = new Rectangle2D.Double(ulx2, uly2, 1/4*d, 1/4*d);
+        Ellipse2D.Double circle1 = new Ellipse2D.Double(ulx3, uly3, 1/4d, 1/4d);
+        Ellipse2D.Double circle2 = new Ellipse2D.Double(ulx4, uly4, 1/4d, 1/4d);
         Shape shape1 = transform.createTransformedShape(Rect1);
         Shape shape2 = transform.createTransformedShape(Rect2);
         Shape shape3 = transform.createTransformedShape(circle1);
+        Shape shape4 = transform.createTransformedShape(circle2);
         g2D.setColor(this.getColor());
         g2D.fill(shape1);
         g2D.fill(shape2);
         g2D.fill(shape3);
+        g2D.fill(shape4);
     } // paintComponent( Graphics )
 
     @Override
