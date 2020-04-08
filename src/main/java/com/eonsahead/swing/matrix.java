@@ -1,0 +1,223 @@
+package com.eonsahead.swing;
+
+/**
+ * Model a matrix.
+ *
+ * @author Leon Tabak
+ * @version 1 April 2020
+ */
+/**
+ * Thanks for Leon's code and I got so many helps from Chase through E-mail 
+ * @author Erlang
+ * @version 1 April 2020
+ */
+public class matrix {
+
+    private double[][] elements = new double[4][4];
+    /**
+     * creates a identity matrix 
+     */
+    public matrix() {
+        this.identity();
+    }
+/**
+ * mutipling a 4by4 matrix with another 4by4 matrix
+ * @param otherMatrix a 4by4 matrix we used to multiply with origin one 
+ * @return A 4x4 matrix that is the product of the other two matrices.
+ */
+    public matrix multiply(matrix otherMatrix) {
+        matrix product = new matrix();
+        for (int row = 0; row < 4; row++) {
+            for (int column = 0; column < 4; column++) {
+                double sum = 0.0;
+                for (int k = 0; k < 4; k++) {
+                    sum += this.elements[row][k] * otherMatrix.elements[k][column];
+                }
+                product.set(row, column, sum);
+            }
+        }
+        return product;
+    }
+
+    /**
+     * mutipling a 4by4 matrix with another 4 elements vector.
+     * 
+     * @param v The vector with 4 elements this matrix is  used to multiply.
+     * @return A vector of length 4 that is the product of origin matrix and 
+     * a vector.
+     */
+    public Vector multiply(Vector v) {
+        Vector newV = new Vector();
+        for(int i = 0; i < 4; i++) {
+            double sum = 0;
+            for(int j = 0; j < 4; j++) {
+                sum = sum + this.elements[i][j] * v.get(j);
+            }// for
+            newV.set(i, sum);
+        }// for
+        return newV;
+    }// multiply(Vector)
+
+    /**
+     * learned from class, translate each row to one string datatype 
+     * @param row a row with four elements in it 
+     * @return  same elements in one row but with different datatype 
+     */
+    private String rowToString(int row) {
+        StringBuilder result = new StringBuilder();
+        result.append("(");
+        result.append(this.elements[row][0]);
+        result.append(",");
+        result.append(this.elements[row][1]);
+        result.append(",");
+        result.append(this.elements[row][2]);
+        result.append(",");
+        result.append(this.elements[row][3]);
+        result.append(")");
+        return result.toString();
+
+    }
+
+    @Override
+    /**
+     * change all the rwo to string 
+     */
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        result.append("[");
+        for (int i = 0; i < 4; i++) {
+            result.append(rowToString(i));
+
+        }
+        result.append("]");
+        return result.toString();
+
+    }
+    /**
+     * Learned from class, transform the whole matrix with an angle 
+     * @param angle an angle we use to make matrix rotate 
+     */
+    public void rotation(double angle) {
+        this.identity();
+        this.set(0, 0, Math.cos(angle));
+        this.set(0, 1, -Math.sin(angle));
+        this.set(1, 0, Math.sin(angle));
+        this.set(1, 1, Math.cos(angle));
+    }
+
+    /**
+     * get a particular element from matrix 
+     * @param row which row this element is in
+     * @param column which column this element is in
+     * @return 
+     */
+    public double get(int row, int column) {
+        return this.elements[row][column];
+    }//get (int,int)
+    
+    /**
+     * change a single element to another one at certain place 
+     * @param row which row this element is in
+     * @param column which column this element is in
+     * @param value what value we use to replace the origin one 
+     */
+    public void set(int row, int column, double value) {
+        this.elements[row][column] = value;
+
+    }
+
+    /**
+     * used to create a identity matrix 
+     */
+    public void identity() {
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (i == j) {
+                    this.elements[i][j] = 1.0;
+
+                } else {
+                    this.elements[i][j] = 0.0;
+                }
+            }
+        }
+    }
+    
+    /**
+     * Matrix to model a rotation about the x axis
+     * 
+     * @param angle an angle we use to make matrix rotate 
+     */
+     public final void rotateX(double angle) {
+        double cos = Math.cos(angle);
+        double sin = Math.sin(angle);
+        this.identity();
+        this.set(1, 1, cos);
+        this.set(1, 2, -sin);
+        this.set(2, 1, sin);
+        this.set(2, 2, cos);
+    }// rotateX(double)
+    
+     /**
+      * Matrix to model a rotation about the y axis
+      * @param angle an angle we use to make matrix rotate 
+      */
+     public final void rotateY(double angle) {
+        double cos = Math.cos(angle);
+        double sin = Math.sin(angle);
+        this.identity();
+        this.set(0, 0, cos);
+        this.set(2, 0, -sin);
+        this.set(0, 2, sin);
+        this.set(2, 2, cos);
+    }// rotateY(double)
+     
+     /**
+      * Matrix to model a rotation about the z axis
+      * @param angle an angle we use to make matrix rotate 
+      */
+     public final void rotateZ(double angle) {
+        double cos = Math.cos(angle);
+        double sin = Math.sin(angle);
+        this.identity();
+        this.set(0, 0, cos);
+        this.set(0, 1, -sin);
+        this.set(1, 0, sin);
+        this.set(1, 1, cos);
+    }// rotateZ(double)
+     /**
+      * The method sets the values of the elements of the
+      * matrix to create a matrix that models a scaling.
+      * @param x a number we used to enlarge or shunk this matrix on xasis 
+      * @param y a number we used to enlarge or shunk this matrix on yasis 
+      * @param z a number we used to enlarge or shunk this matrix on zasis 
+      */
+      public final void scale(double x, double y, double z) {
+        this.identity();
+        this.set(0, 0, x);
+        this.set(1, 1, y);
+        this.set(2, 2, z);
+    }// scale(double, double, double)
+
+      /**
+       * use to execute code 
+       * @param args not using it 
+       */
+    public static void main(String[] args) {
+        matrix identity = new matrix();
+        System.out.println("identity =" + identity);
+
+        matrix product = identity.multiply(identity);
+        System.out.println("identity =" + identity);
+
+        matrix ccw = new matrix();
+        ccw.rotation(Math.PI / 4);
+
+        matrix cw = new matrix();
+        cw.rotation(-Math.PI / 4);
+
+        matrix netrotation = ccw.multiply(cw);
+        System.out.println("net rotation =" + netrotation);
+
+    }
+
+}
